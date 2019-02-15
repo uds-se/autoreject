@@ -16,6 +16,15 @@
 <label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
 
 <script>
+function review_head()
+{
+	var r = ""
+
+	r += "REVIEW.  Generally speaking, this is interesting work which may well find some readers in the community.  However, in its present form, the paper suffers from a number of issues, which are outlined below.\n\n"
+	
+	return r
+}
+
 function review_field()
 {
 	var area = document.getElementById("area").value
@@ -115,10 +124,21 @@ function review_author()
 
 <script>
 function update_approach(box) {
-	has_approach = 1
 	box.indeterminate = false
 	update_review()
 }
+function any_approach_set() {
+	var novel_i = document.getElementById("novel").indeterminate
+	var incremental_i = document.getElementById("incremental").indeterminate
+	var sound_i = document.getElementById("sound").indeterminate
+	var complete_i = document.getElementById("complete").indeterminate
+	var formal_i = document.getElementById("formal").indeterminate
+	var scales_i = document.getElementById("scales").indeterminate
+	var inuse_i = document.getElementById("inuse").indeterminate
+	
+	return !novel_i || !incremental_i || !sound_i || !complete_i || !scales_i || !inuse_i
+}
+
 function review_approach() {
 	var novel = document.getElementById("novel").checked
 	var incremental = document.getElementById("incremental").checked
@@ -135,6 +155,11 @@ function review_approach() {
 	var formal_i = document.getElementById("formal").indeterminate
 	var scales_i = document.getElementById("scales").indeterminate
 	var inuse_i = document.getElementById("inuse").indeterminate
+	
+	if (!any_approach_set())
+	{
+		return "<<< Please comment on the approach.\n"
+	}
 		
 	var s = "APPROACH.  "
 	if (!novel_i)
@@ -214,10 +239,16 @@ function review_approach() {
 
 <script>
 function update_evaluation() {
-	has_evaluation = 1
 	update_review()
 }
-
+function any_evaluation_set() {
+	var subjects = document.getElementById("subjects").value
+	var working = document.getElementById("working").value
+	var comparisons = document.getElementById("comparisons").value
+	var students_i = document.getElementById("students").indeterminate
+	
+	return subjects || working || comparisons || !students_i
+}
 function review_evaluation() {
 	var subjects = document.getElementById("subjects").value
 	var working = document.getElementById("working").value
@@ -230,6 +261,10 @@ function review_evaluation() {
 	var anon = document.getElementById("anon").checked
 	
 	var area = document.getElementById("area").value
+	
+	if (!any_evaluation_set()){
+		return "<<< Please comment on the evaluation.\n"
+	}
 	
 	var s = "EVALUATION.  "
 	
@@ -250,7 +285,7 @@ function review_evaluation() {
 	}
 	else
 	{
-		s += "The evaluation seems to be okay.\n\n"
+		s += "The evaluation seems to be okay.\n"
 	}
 	
 	if (working.length > 0)
@@ -322,10 +357,14 @@ function review_evaluation() {
 
 <script>
 function update_limitations() {
-	has_limitations = 1
 	update_review()
 }
-
+function any_limitations_set() {
+	var threats_i = document.getElementById("threats").indeterminate
+	var future_work_i = document.getElementById("future_work").indeterminate
+	
+	return !threats_i || !future_work_i
+}
 function review_limitations()
 {
 	var threats = document.getElementById("threats").checked
@@ -336,6 +375,10 @@ function review_limitations()
 
 	var area = document.getElementById("area").value
 	var field = document.getElementById("field").value
+	
+	if (!any_limitations_set()) {
+		return "<<< Please comment on limitations.\n"
+	}
 	
 	if (!area) {
 		area = "this area"
@@ -385,10 +428,14 @@ function review_limitations()
 
 <script>
 function update_reproducibility() {
-	has_reproducibility = 1
 	update_review()
 }
-
+function any_reproducibility_set() {
+	var open_source_i = document.getElementById("open_source").indeterminate
+	var open_data_i = document.getElementById("open_data").indeterminate
+	
+	return !open_source_i || !open_data_i
+}
 function review_reproducibility()
 {
 	var open_source = document.getElementById("open_source").checked
@@ -399,6 +446,11 @@ function review_reproducibility()
 	
 	var area = document.getElementById("area").value
 	var field = document.getElementById("field").value
+	
+	if (!any_reproducibility_set())
+	{
+		return "<<< Please comment on reproducibility.\n"
+	}
 	
 	var s = "REPRODUCIBILITY.  "
 
@@ -435,7 +487,7 @@ function review_reproducibility()
 </script>
 
 
-<h3>Minor Issues</h3>
+<h3>Presentation</h3>
 
 <input id="grammar" onchange="update_presentation()" type="checkbox"> <label for="grammar">The paper has no grammatical errors.</label><br>
 <input id="typos" onchange="update_presentation()" type="checkbox"> <label for="typos">The paper has no spelling errors.</label><br>
@@ -444,8 +496,15 @@ function review_reproducibility()
 
 <script>
 function update_presentation() {
-	has_presentation = 1
 	update_review()
+}
+function any_presentation_set() {
+	var grammar_i = document.getElementById("grammar").indeterminate
+	var typos_i = document.getElementById("typos").indeterminate
+	var layout_i = document.getElementById("layout").indeterminate
+	var biblio_i = document.getElementById("biblio").indeterminate
+	
+	return !grammar_i || !typos_i || !layout_i || !biblio_i
 }
 
 function review_presentation()
@@ -459,6 +518,11 @@ function review_presentation()
 	var typos_i = document.getElementById("typos").indeterminate
 	var layout_i = document.getElementById("layout").indeterminate
 	var biblio_i = document.getElementById("biblio").indeterminate
+	
+	if (!any_presentation_set())
+	{
+		return "<<< Please comment on presentation.\n"
+	}
 
 	var initial_s = "PRESENTATION.  "
 	var s = initial_s
@@ -542,10 +606,10 @@ function review_bibliography()
 
 <h2>The Review</h2>
 
-<button onclick="copy_review()">Copy to clipboard</button><br>
-
 <textarea id="review" rows="66" cols="80" style="font-family: monospace" readonly>
 </textarea>
+
+<p><button onclick="copy_review()">Copy to clipboard</button><br>
 
 </div>
 </div>
@@ -554,29 +618,54 @@ function review_bibliography()
 function review_title()
 {
 	var title = document.getElementById("title").value
-	var s = "Review of '" + title + "'"
 	var anon = document.getElementById("anon").checked
 	var anon_i = document.getElementById("anon").indeterminate
 
 	var author = document.getElementById("author").value
 	var institution = document.getElementById("institution").value
+
+	var s = ""
 	
-	if (!anon_i && !anon)
+	s += "Dear "
+	
+	if (!anon_i && !anon && author)
 	{
 		if (author && institution)
 		{
-			s += " by " + author + ", " + institution
+			s += author + " (" + institution + "),"
 		}
-		else if (author)
+		else
 		{
-			s += " by " + author
-		}
-		else if (institution)
-		{
-			s += institution
+			s += author + ","
 		}
 	}
+	else
+	{
+		s += "Author, "
+	}
 	s += "\n\n"
+	
+	s += "Thank you very much for your submission"
+	
+	if (title)
+	{
+		s += "\n\n    '" + title + "'\n\n"
+	}
+	else
+	{
+		s += ".  "
+	}
+	
+	if (all_decisions())
+	{
+		s += "We are sorry to inform you that your paper was rejected.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Unfortunately, your paper was not one of them.\n\n"
+	
+		s += "We have enclosed detailed reviews of your paper below.  We hope that these will help you in your scientific work and look forward to your future submissions!\n\n"
+	}
+	else
+	{
+		s += "We have enclosed detailed reviews of your paper below.\n\n"		
+	}
 
 	return s
 }
@@ -595,6 +684,11 @@ function review_abstract()
 	var layout = document.getElementById("incremental").checked
 	var grammar = document.getElementById("grammar").checked
 	var typos = document.getElementById("typos").checked
+	
+	if (!all_decisions())
+	{
+		return ""
+	}
 	
 	if (!field) {
 		field = "research"
@@ -650,6 +744,22 @@ function review_abstract()
 	return s
 }
 
+function all_decisions()
+{
+	return any_approach_set() && any_evaluation_set() && any_limitations_set() && any_reproducibility_set() && any_presentation_set()
+}
+
+function any_decision()
+{
+	var title = document.getElementById("title").value
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	var author = document.getElementById("author").value
+	var anon_i = document.getElementById("anon").indeterminate
+	
+	return title || area || field || author || !anon_i || any_approach_set() || any_evaluation_set() || any_limitations_set() || any_reproducibility_set() || any_presentation_set()
+}
+
 function review_summary()
 {
 	var title = document.getElementById("title").value
@@ -664,6 +774,11 @@ function review_summary()
 	var layout = document.getElementById("layout").checked
 	var grammar = document.getElementById("grammar").checked
 	var typos = document.getElementById("typos").checked
+	
+	if (!all_decisions())
+	{
+		return ""
+	}
 	
 	if (!field) {
 		field = "research"
@@ -718,47 +833,27 @@ function review()
 {
 	var title = document.getElementById("title").value
 	
-	if (title.length < 3)
+	if (!any_decision())
 	{
 		return "Welcome to autoreject.org, the number one time saver for scientific reviews!\n\nWith autoreject.org, you can produce detailed reviews simply by answering a handful of questions on the paper.\n\n<<< To get started, simply fill out the form.\n"
 	}
 
 	r = review_title()
 	
-	if (has_approach && has_evaluation) {
-		r += review_abstract()
-	}
+	r += review_abstract()
 
-	r += "REVIEW.  Generally speaking, this is interesting work which may well find some readers in the community.  However, in its present form, the paper suffers from a number of issues, which are outlined below.\n\n"
+	r += review_head()
 
 	r += review_field()
 	r += review_author()
+	r += review_approach()
+	r += review_evaluation()
+	r += review_limitations()
+	r += review_reproducibility()
+	r += review_presentation()
+	r += review_bibliography()
 	
-	if (has_approach) {
-		r += review_approach()
-	}
-	if (has_evaluation) {
-		r += review_evaluation()
-	}
-	if (has_limitations) {
-		r += review_limitations()
-	}
-	if (has_reproducibility) {
-		r += review_reproducibility()
-	}
-	if (has_presentation) {
-		r += review_presentation()
-		r += review_bibliography()
-	}
-
-	if (has_approach && has_evaluation && has_limitations && has_reproducibility && has_presentation)
-	{
-		r += review_summary()
-	}
-	else
-	{
-		r += "\n\n<<< Complete the form to complete review"
-	}
+	r += review_summary()
 
 	return r
 }
@@ -788,12 +883,6 @@ function set_indeterminate() {
 
 function init()
 {
-	has_approach = 0
-	has_evaluation = 0
-	has_limitations = 0
-	has_reproducibility = 0
-	has_presentation = 0
-
 	set_indeterminate()
 	update_review()
 }
