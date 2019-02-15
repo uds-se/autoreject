@@ -24,9 +24,10 @@
 <div>
 
 <form id="paper" action="#" method="generate_review" onreset="init()">
-<h2>The Paper</h2>
+<h2>The Paper <span class="checkmark" id="paper_check"></span></h2>
 
-<!-- ><h3>General Info</h3> -->
+<h3>Title and Area <span class="checkmark" id="title_check"></h3>
+
 <label for="title">Paper title:</label> <input id="title" type="text" placeholder="The Potrzebie System of Weights and Measures" size=52 oninput="update_review()" autofocus><br>
 <label for="area">Main Area:</label> <input id="area" type="text" placeholder="Computer Science" size=20 oninput="update_review()">
 <label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
@@ -155,7 +156,7 @@ function review_field(accept)
 </script>
 
 
-<h3>Author</h3>
+<h3>Author <span class="checkmark" id="author_check"></span></h3>
 
 <label for="author">Main Author:</label> <input id="author" type="text" placeholder="Donald E. Knuth" size=20 oninput="update_review()">
 <label for="institution">Institution:</label> <input id="institution" type="text" placeholder="Stanford" size=20 oninput="update_review()"> <br>
@@ -237,7 +238,7 @@ function review_author(accept)
 </script>
 
 
-<h3>Approach</h3>
+<h3>Approach <span class="checkmark" id="approach_check"></span></h3>
 
 <input id="novel" type="checkbox" onchange="update_approach(this)"> <label for="novel">The approach is novel.</label><br>
 <input id="incremental" onchange="update_approach(this)" type="checkbox"> <label for="incremental">The approach extends earlier work.</label><br>
@@ -361,7 +362,7 @@ function review_approach(accept) {
 }
 </script>
 
-<h3>Evaluation</h3>
+<h3>Evaluation <span class="checkmark" id="evaluation_check"></span></h3>
 
 
 <input id="subjects" oninput="update_evaluation()" type="number" placeholder="10" min="0" max="999" pattern="\d*"> <label for="subjects">Number of subjects the approach was evaluated on.</label><br>
@@ -492,7 +493,7 @@ function review_evaluation(accept) {
 </script>
 
 
-<h3>Limitations</h3>
+<h3>Limitations <span class="checkmark" id="limitations_check"></span></h3>
 
 <input id="threats" type="checkbox" onchange="update_limitations()"> <label for="threats">The paper discusses threats to validity.</label><br>
 <input id="future_work" type="checkbox" onchange="update_limitations()"> <label for="future_work">The paper details future work.</label>
@@ -570,7 +571,7 @@ function review_limitations(accept)
 </script>
 
 
-<h3>Reproducibility</h3>
+<h3>Reproducibility <span class="checkmark" id="reproducibility_check"></span></h3>
 
 <input id="open_source" onchange="update_reproducibility()" type="checkbox"> <label for="open_source">The code is available as open source</label>.<br>
 <input id="open_data" onchange="update_reproducibility()" type="checkbox"> <label for="open_data">The raw data is available as open data.</label><br>
@@ -646,7 +647,7 @@ function review_reproducibility(accept)
 </script>
 
 
-<h3>Presentation</h3>
+<h3>Presentation <span class="checkmark" id="presentation_check"></span></h3>
 
 <input id="grammar" onchange="update_presentation()" type="checkbox"> <label for="grammar">The paper has no grammatical errors.</label><br>
 <input id="typos" onchange="update_presentation()" type="checkbox"> <label for="typos">The paper has no spelling errors.</label><br>
@@ -783,9 +784,9 @@ function review_bibliography(accept)
 
 <div>
 
-<h2>The Review</h2>
+<h2>The Review <span class="checkmark" id="review_check"></span></h2>
 
-<textarea id="review" rows="50" cols="72"readonly>
+<textarea id="review" rows="53" cols="72" readonly>
 Please enable JavaScript in your browser.
 </textarea>
 
@@ -905,16 +906,28 @@ function all_decisions()
 	return any_approach_set() && any_evaluation_set() && any_limitations_set() && any_reproducibility_set() && any_presentation_set()
 }
 
-function any_decision()
+function any_title_set()
 {
 	var title = document.getElementById("title").value
 	var area = document.getElementById("area").value
 	var field = document.getElementById("field").value
+	
+	return title || area || field
+}
+
+function any_author_set()
+{
 	var author = document.getElementById("author").value
 	var anon_i = document.getElementById("anon").indeterminate
 	var rebuttal_i = document.getElementById("rebuttal").indeterminate
 	
-	return title || area || field || author || !anon_i || !rebuttal_i || any_approach_set() || any_evaluation_set() || any_limitations_set() || any_reproducibility_set() || any_presentation_set()
+	return author || !anon_i || !rebuttal_i
+}
+
+
+function any_decision()
+{
+	return any_title_set() || any_author_set() || any_approach_set() || any_evaluation_set() || any_limitations_set() || any_reproducibility_set() || any_presentation_set()
 }
 
 function review_summary(accept)
@@ -1049,6 +1062,9 @@ function update_review()
 {
 	var review_text = review(privileged())
 	document.getElementById("review").value = review_text
+
+	update_checkmarks()
+
 	copied.innerHTML = ""
 }
 
@@ -1100,6 +1116,36 @@ function set_indeterminate() {
 		el.indeterminate = true
 		el.checked = false
 	}
+}
+
+function set_checkmark(id, status)
+{
+	el = document.getElementById(id)
+
+	if (status)
+	{
+		el.innerHTML = "&nbsp;&#10004;" // checkmark
+	}
+	else
+	{
+		el.innerHTML = ""
+	}
+}
+
+function update_checkmarks() {
+	set_checkmark("review_check", all_decisions())
+	
+	set_checkmark("title_check", any_title_set())
+	set_checkmark("author_check", any_author_set())
+	
+	set_checkmark("paper_check", all_decisions() && any_title_set() && any_author_set())
+
+	
+	set_checkmark("approach_check", any_approach_set())
+	set_checkmark("evaluation_check", any_evaluation_set())
+	set_checkmark("limitations_check", any_limitations_set())
+	set_checkmark("presentation_check", any_presentation_set())
+	set_checkmark("reproducibility_check", any_reproducibility_set())
 }
 
 function init()

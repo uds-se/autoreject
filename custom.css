@@ -51,6 +51,10 @@ h1, h2, h3, a {
     color: darkblue;
 }
 
+.checkmark {
+    color: #a0a0a0;
+}
+
 #container {
     border-style: solid;
     border-width: 2px;
