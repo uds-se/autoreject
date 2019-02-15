@@ -56,3 +56,7 @@ h1, h2, h3, a {
     display: flex;
     flex-wrap: wrap;
 }
+
+input[type=number]{
+    width: 40px;
+} 
