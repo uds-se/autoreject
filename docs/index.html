@@ -1,0 +1,804 @@
+<html>
+<body onload="init()">
+<h1>Autoreject.org &mdash; An automatic review generator</h1>
+
+<em>"Detailed reviews at the touch of a button ... Every reviewer should bookmark this immediately."</em> &mdash; Science and Review 24:2, April 2019
+
+<div class="flex-container" style="display: flex">
+<div>
+
+<form id="paper" action="#" method="generate_review">
+<h2>The Paper</h2>
+
+<h3>General Info</h3>
+<label for="title">Paper title:</label> <input id="title" type="text" placeholder="The Potrzebie System of Weights and Measures" size=52 required oninput="update_review()"><br>
+<label for="area">Main Area:</label> <input id="area" type="text" placeholder="Computer Science" size=20 oninput="update_review()" required>
+<label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
+
+<script>
+function review_field()
+{
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	
+	if (!area && !field) {
+		return ""
+	}
+	
+	var s = "AREA.  "
+	if (!area && field)
+		area = field
+	if (area)
+	{
+		s += area + " is not new.  The past decade has seen a flurry of papers in the area, which would indicate progress and interest.  However, the impact _outside_ of " + area + " has been very limited, as is easily reflected in the ever-decreasing number of citations.  Unfortunately, " + area + " finds itself in a sandwich position between a more theoretical community and a more practical community, which can both claim a bigger intellectual challenge and a greater relevance in practical settings.  "
+	}
+	if (area && field && area != field)
+	{
+		s += "This is especially true for the field of " + field + ", where the last big progress is now decades ago.  "
+	}
+	s += "As refreshing it feels to finally again see progress claimed in the field, the present paper must be read and evaluated in this context.\n\n"
+
+	return s
+}
+</script>
+
+
+<h3>Author</h3>
+
+<label for="author">Main Author:</label> <input id="author" type="text" placeholder="Donald E. Knuth" size=20 oninput="update_review()">
+<label for="institution">Institution:</label> <input id="institution" type="text" placeholder="Stanford" size=20 oninput="update_review()"> <br>
+
+<input id="anon" type="checkbox" onchange="update_review()"> <label for="anon">The submission is anonymous; Author and institution are guesses</label><br>
+<input id="rebuttal" type="checkbox"> <label for="rebuttal">The authors have provided a rebuttal</label><br> <!-- no effect -->
+
+
+<script>
+function review_author()
+{
+	var author = document.getElementById("author").value
+	var institution = document.getElementById("institution").value
+	var anon = document.getElementById("anon").checked
+	
+	var s = ""
+	if (anon)
+	{
+		if (author || institution)
+		{
+			s += "ORIGINALITY.  The central problem of the paper is its novelty with respect to related work.  Just last month, this reviewer attended a talk "
+			if (author)
+			{
+				s += "by " + author + " "
+			}
+			if (institution)
+			{
+				s += "at " + institution + " "
+			}
+			s += "where a very similar solution to the exact same problem was presented."
+			if (author)
+			{
+				s += "  The paper is actually online at\n\n"
+				s += "    http://scigen.csail.mit.edu/cgi-bin/scigen.cgi?author=" + encodeURI(author)
+			}
+			s += "\n\nPlease relate your work carefully against this existing work, precisely highlighting the advances.\n\n"
+		}
+	}
+	else // not anonymous
+	{
+		if (author || institution)
+		{
+			s += "ORIGINALITY.  This paper adds to a long line of research "
+			if (author)
+			{
+				s += "by " + author + " "
+			}
+			if (institution)
+			{
+				s += "at " + institution + " "
+			}
+			s += "which _has_ had some impact in well-delimited fields.  The central problem is how the present submission can still add something original to this body of work.\n\n"
+		}
+	}
+	return s
+}	
+</script>
+
+
+<h3>Approach</h3>
+
+<input id="novel" type="checkbox" onchange="update_approach(this)"> <label for="novel">The approach is novel.</label><br>
+<input id="incremental" onchange="update_approach(this)" type="checkbox"> <label for="incremental">The approach extends earlier work.</label><br>
+<input id="sound" onchange="update_approach(this)" type="checkbox"> <label for="sound">The approach has no false positives.</label><br>
+<input id="complete" onchange="update_approach(this)" type="checkbox"> <label for="complete">The approach has no false negatives.</label><br>
+<input id="formal" onchange="update_approach(this)" type="checkbox"> <label for="formal">The approach is formally defined.</label><br>
+<input id="scales" onchange="update_approach(this)" type="checkbox"> <label for="scales">The approach scales.</label><br>
+<input id="inuse" onchange="update_approach(this)" type="checkbox"> <label for="inuse">The approach is in use outside of academia.</label>
+
+<script>
+function update_approach(box) {
+	has_approach = 1
+	box.indeterminate = false
+	update_review()
+}
+function review_approach() {
+	var novel = document.getElementById("novel").checked
+	var incremental = document.getElementById("incremental").checked
+	var sound = document.getElementById("sound").checked
+	var complete = document.getElementById("complete").checked
+	var formal = document.getElementById("formal").checked
+	var scales = document.getElementById("scales").checked
+	var inuse = document.getElementById("inuse").checked
+
+	var novel_i = document.getElementById("novel").indeterminate
+	var incremental_i = document.getElementById("incremental").indeterminate
+	var sound_i = document.getElementById("sound").indeterminate
+	var complete_i = document.getElementById("complete").indeterminate
+	var formal_i = document.getElementById("formal").indeterminate
+	var scales_i = document.getElementById("scales").indeterminate
+	var inuse_i = document.getElementById("inuse").indeterminate
+		
+	var s = "APPROACH.  "
+	if (!novel_i)
+	{
+		if (novel) {
+			s += "The approach is novel in the sense that the exact same approach has not been examined before.\n\n"
+		}
+		if (!novel) {
+			s += "As the authors state themselves, their approach is not novel.  As much as the community appreciates replication of existing work, there simply is not enough to learn from the present paper.\n\n"
+		}
+	}
+
+	if (!incremental_i) {
+		if (incremental) {
+			s += "A central problem with the approach is that the difference with respect to earlier work is simply too small.  An incremental approach such as this one may be appreciated in practice, as it may easily integrate into existing processes; but for a research paper, the community expects bigger leaps.\n\n"
+		} else {
+			s += "As much as the community may appreciate how much this paper stays away from the scientific mainstream, the problem is that the approach requires too many changes in current products and processes to have a chance to succeed in practice.  Without a viable strategy that states to adopt their approach, its practical value is at best limited.\n\n"
+		}
+	}
+
+	if (!sound_i && !sound) {
+		s += "The approach suffers from a large number of false positives.  In my experience, this is exactly the central problem of this and related approaches in the field; and it is this problem which - for more than a decade! - has undermined the reputation of such approaches in practice.  Unless the number of false positives is significantly reduced, this reviewer sees no chance for the approach to succeed.\n\n"
+	}
+	if (!complete_i && !complete) {
+		s += "The large number of false negatives is another serious concern.  In my experience, this is exactly the central problem of this and related approaches in the field; and it is this problem which - for more than a decade! - has undermined the reputation of such approaches in practice.  Unless the number of false negatives is significantly reduced, this reviewer sees no chance for the approach to succeed.\n\n"
+	}
+	if (!sound_i && !complete_i && !sound && !complete) {
+		s += "Also, with the approach apparently being neither sound nor complete, how is this ever to succeed in practice?\n\n"
+	}
+	if (!sound_i && !complete_i && sound && complete) {
+		s += "At first sight, the approach shows an impressive accuracy - almost too good to be true.  This accuracy, however, can be achieved only in very controlled environments, as outlined below; the authors will have to demonstrate their approach on realistic data sets to establish any credibility.\n\n"
+	}
+	
+	if (!formal_i) {
+		if (formal) {
+			s += "The paper suffers from an excess of formalism.  Several important definitions are introduced formally only, without a chance to clearly understand their motivation or usage.  The authors should be encouraged to make more use of informal definitions, reusing on the well-established formal definitions in the community.\n\n"
+		}
+		else
+		{
+			s += "The paper suffers from a lack of precision.  Several important definitions are introduced informally, without a chance to clearly reproduce - or even understand! - the approach at hand.  The authors should be encouraged to make more use of formal definitions, using the tools of the trade in the community.\n\n"
+		}
+	}
+	
+	if (!scales_i) {
+		if (scales) {
+			s += "It is good to see the approach scale to real-life settings.  The price of scalability, however, is having to cope with a multitude of details, which the paper only glosses over, without ever providing a complete picture.  The authors would be better served to provide a tangible abstraction of their approach; maybe it only works in limited settings, but at least, for these, we can understand how and why.\n\n"
+		}
+		else
+		{
+			s += "For readers, it is helpful to see the approach being demonstrated in a limited setting that facilitates control and comprehension.  However, real-world settings are much more detailed, and much more challenging.  If the approach is ever to succeed in practice, having a demonstrator that copes with real-world conditions is a must; the authors would be encouraged to work with industry to get access to appropriate settings and data sets.\n\n"
+		}
+	}
+	
+	if (!inuse_i)
+	{
+		if (inuse)
+		{
+			s += "The authors should be happy to see their approach being used outside of academia.  However, this challenges the novelty of the present submission: Not only is the approach is no longer superior to the state of the art, it even is not longer superior to the state of the practice - ironically, because it now defines what the current state of practice is.  The submission had better be framed as an experience report and target non-academic readers.\n\n"
+		}
+		else
+		{
+			s += "Given the above problems of the approach, it is not surprising that its adoption so far is limited.  It would be wiser to wait with publication until the approach has become more mature and the authors have gathered more experience in practical settings.\n\n"
+		}
+	}
+
+	return s
+}
+</script>
+
+<h3>Evaluation</h3>
+
+
+<input id="subjects" oninput="update_evaluation()" type="number" placeholder="10" min="0" max="999"> <label for="subjects">Number of subjects the approach was evaluated on.</label><br>
+<input id="working" oninput="update_evaluation()" type="number" placeholder="5" min="0" max="999"> <label for="working">Number of subjects it shows improvements on.</label><br>
+<input id="comparisons" oninput="update_evaluation()" type="number" placeholder="3" min="0" max="999"> <label for="comparisons">Number of approaches it was compared against.</label><br>
+<input id="students" onchange="update_evaluation()" type="checkbox"> <label for="students">The evaluation involves students.</label><br>
+
+<script>
+function update_evaluation() {
+	has_evaluation = 1
+	update_review()
+}
+
+function review_evaluation() {
+	var subjects = document.getElementById("subjects").value
+	var working = document.getElementById("working").value
+	var comparisons = document.getElementById("comparisons").value
+	var students = document.getElementById("students").checked
+	var students_i = document.getElementById("students").indeterminate
+
+	var author = document.getElementById("author").value
+	var institution = document.getElementById("institution").value
+	var anon = document.getElementById("anon").checked
+	
+	var area = document.getElementById("area").value
+	
+	var s = "EVALUATION.  "
+	
+	if (subjects.length > 0)
+	{
+		if (subjects == 0)
+		{
+			s += "As nice as it is to see the approach defined and its properties discussed, it _has_ to be evaluated whether it works on actual subjects.  Without a detailed evaluation, we can never know whether the claimed properties also hold under less abstract and less favorable circumstances.\n\n"
+		}
+		if (subjects == 1)
+		{
+			s += "Evaluating the approach on one subject serves well as proof of concept.  However, to capture the wide range of possible subjects, a more widespread evaluation will be necessary to dispel doubts on the generality of the approach.\n\n"
+		}
+		if (subjects > 1)
+		{
+			s += "Evaluating the approach on " + subjects + " subjects is a promising first step.  However, the number of subjects appears far too small with respect to the limited effects expected and observed.  The number must be at least double; with the given limited control of variability, a number of " + (subjects * 3) + " would be even more appropriate.\n\n"
+		}
+	}
+	else
+	{
+		s += "The evaluation seems to be okay.\n\n"
+	}
+	
+	if (working.length > 0)
+	{
+		if (working == 0)
+		{
+			s += "These concerns are the more troubling as apparently, the approach for now does not show improvements.  The causes for these effects must be thoroughly investigated, probably in a revised version of this paper.\n\n"
+		
+		}
+		else if (parseInt(working) < parseInt(subjects))
+		{
+			s += "The fact that the approach produces inconsistent findings across the " + subjects + " subjects is a cause for concern.  How can you claim superiority of your approach if it is clearly inferior on " + (subjects - working) + " subjects?  You have to precisely identify and evaluate under which circumstances your approach is better, and how prevalent (and likely) these circumstances are.  These results are not promising.\n\n"
+		}
+	}
+	
+	if (comparisons.length > 0)
+	{
+		if (comparisons == 0)
+		{
+			if (!area)
+			{
+				area = "the field"
+			}
+			s += "Your experiments do not compare against related approaches.  However, there is a multitude of approaches in " + area + " that might be applicable.  "
+		}
+		if (comparisons > 0)
+		{
+			s += "Comparing the approach against " + comparisons + " competing approaches is necessary given how incremental your approach is.  However, the number of approaches compared against appears far too small with respect to the limited effects expected and observed.  The number must be at least double; given the limited control of variability, a number of " + (comparisons * 3) + " would be even more appropriate.  "
+		}
+	}
+
+	if (anon && (author || institution))
+	{
+		s += "In your evaluation, you also _have_ to compare against the recent work "
+		if (author) {
+			s += "by " + author + " "
+		}
+		if (institution) {
+			s += "at " + institution + " "
+		}
+		s += "- one of the few who still do research in the field."
+	}
+	s += "\n\n"
+	
+	if (!students_i)
+	{
+		if (students) {
+			s += "The fact that your evaluation involves students is also a cause for concerns - not only for ethical reasons, but also for the sake of generality.  Generally speaking, results achieved with students cannot generalize to results achieved with the general public"
+			if (area)
+			{
+				s += " - especially not in " + area
+			}
+			s += ".  You have to run your evaluation and experiments involving a wider range of subjects.\n\n"
+		}
+		if (!students) {
+			s += "Given how simple your approach is, it is a pity it was not evaluated in a teaching context involving students - this could have compensated for it being less suitable for practical purposes.  For the next revision of your paper, include an evaluation involving students.\n\n"
+		}
+	}
+
+	return s
+}
+</script>
+
+
+<h3>Limitations</h3>
+
+<input id="threats" type="checkbox" onchange="update_limitations()"> <label for="threats">The paper discusses threats to validity.</label><br>
+<input id="future_work" type="checkbox" onchange="update_limitations()"> <label for="future_work">The paper details future work.</label>
+
+<script>
+function update_limitations() {
+	has_limitations = 1
+	update_review()
+}
+
+function review_limitations()
+{
+	var threats = document.getElementById("threats").checked
+	var future_work = document.getElementById("future_work").checked
+
+	var threats_i = document.getElementById("threats").indeterminate
+	var future_work_i = document.getElementById("future_work").indeterminate
+
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	
+	if (!area) {
+		area = "this area"
+	}
+	if (!field) {
+		field = "this field"
+	}
+	
+	s = "LIMITATIONS.  "
+	if (!threats_i) {
+		if (threats)
+		{
+			s += "The section on 'threats to validity' pretty much sums everything up: The approach cannot claim external validity (no surprise, given the evaluation results); on top, _the authors themselves_ list important threats to internal and construct validity.\n\n"
+		}
+		else
+		{
+			s += "The paper does not have an explicit section on threats to validity.  Yet, as discussed above, these threats are manifold.  With respect to external validity, we already have the evaluation results; regarding internal and/or construct validity, the authors themselves would be well-advised to think hard about why their approach might have issues.\n\n"
+		}
+	}
+	
+	if (!future_work_i)
+	{
+		if (future_work)
+		{
+			s += "The section on 'future work' fits into this very picture: There clearly is still a lot of additional work to do until this approach can begin to show the maturity that would be expected from published scientific results.  "
+		}
+		else
+		{
+			s += "The fact that the authors themselves apparently cannot list future work fits into this very picture.  This is a clear indication of work being stuck in an impasse; if one ever needed a living proof how " + field + " has become the laughingstock of the " + area + " community, or how " + area + " is more and more becoming a dead branch of science, here it is.  "
+		}
+	}
+	
+	if (!threats_i && !future_work_i) {
+		s += "With so many threats and limitations, it is unclear whether the paper can be published at all, even in a thoroughly revised form."
+	}
+	s += "\n\n"
+
+	return s
+}
+</script>
+
+
+<h3>Reproducibility</h3>
+
+<input id="open_source" onchange="update_reproducibility()" type="checkbox"> <label for="open_source">The code is available as open source</label>.<br>
+<input id="open_data" onchange="update_reproducibility()" type="checkbox"> <label for="open_data">The raw data is available as open data.</label><br>
+
+<script>
+function update_reproducibility() {
+	has_reproducibility = 1
+	update_review()
+}
+
+function review_reproducibility()
+{
+	var open_source = document.getElementById("open_source").checked
+	var open_data = document.getElementById("open_data").checked
+	
+	var open_source_i = document.getElementById("open_source").indeterminate
+	var open_data_i = document.getElementById("open_data").indeterminate
+	
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	
+	var s = "REPRODUCIBILITY.  "
+
+	if (!open_source_i && open_source)
+	{
+		s += "We rarely see open source packages in " + area + "; so the extra effort by the authors in making their code available is well-appreciated.  However, faced with dozens of files with unknown extensions (.R, .ipynb) which would not even open in Word, this reviewer quickly gave up making sense of it all.  The assumption was that README.md would contain instructions, but again, this reviewer was not able to open it.  In the future, be sure your code can be accessed using standard Office tools and formats.\n\n"
+	}
+	if (!open_data_i && open_data)
+	{
+		s += "This reviewer "
+		if (open_source) {
+			s += "also "
+		}
+		s += "appreciates that the authors provide a data package to reproduce results.  However, attempting to open the package resulted in a message\n\n    unzip: command not found\n\nConsequently, this reviewer was unable to assess the package, and henceforth treated the package as if it were non-existent.  For the future, please be more careful in stating the precise package requirements, assuming less exotic tools and environments.\n\n"
+	}
+	if ((!open_source_i && !open_source) || (!open_data_i && !open_data))
+	{
+		s += "Your "
+		if (!open_source && !open_data) {
+			s += "code and data are "
+		}
+		else if (!open_source) {
+			s += "code is "
+		}
+		else if (!open_data) {
+			s += "data is "
+		}
+		
+		s += "not available as open source.  Being unavailable for the general public, there is no way for readers (or this reviewer) to validate your claims, which is a strict requirement for a scientific contribution.  Please submit it as an electronic appendix with the next revision.\n\n"
+	}
+
+	return s
+}
+</script>
+
+
+<h3>Minor Issues</h3>
+
+<input id="grammar" onchange="update_presentation()" type="checkbox"> <label for="grammar">The paper has no grammatical errors.</label><br>
+<input id="typos" onchange="update_presentation()" type="checkbox"> <label for="typos">The paper has no spelling errors.</label><br>
+<input id="layout" onchange="update_presentation()" type="checkbox"> <label for="layout">The paper has no typesetting or layout errors.</label><br>
+<input id="biblio" onchange="update_presentation()" type="checkbox"> <label for="biblio">The bibliography is complete.</label><br>
+
+<script>
+function update_presentation() {
+	has_presentation = 1
+	update_review()
+}
+
+function review_presentation()
+{
+	var grammar = document.getElementById("grammar").checked
+	var typos = document.getElementById("typos").checked
+	var layout = document.getElementById("layout").checked
+	var biblio = document.getElementById("biblio").checked
+	
+	var grammar_i = document.getElementById("grammar").indeterminate
+	var typos_i = document.getElementById("typos").indeterminate
+	var layout_i = document.getElementById("layout").indeterminate
+	var biblio_i = document.getElementById("biblio").indeterminate
+
+	var initial_s = "PRESENTATION.  "
+	var s = initial_s
+	
+	if (grammar && typos && layout)
+	{
+		s += "The paper is excellently written.  However, even the best of presentations cannot save flawed material.\n\n"
+	}
+	
+	if (!layout_i && !layout)
+	{
+		s += "The typography of your paper is a disgrace.  Respect the style instructions as given by the publisher.  Respect paper lengths.  Do not cheat with super-small fonts.  "
+		s += "Learn what good typography is.  Learn how to use LaTeX, and how to use LaTeX properly.  Do not use multi-letter identifiers in LaTeX math mode.    Distinguish - (hyphen) between elements of compound words, -- (en-dash) in ranges, $-$ (minus) for math, --- (em-dash) for digressions in a sentence.  use the correct quotes (`` and '').  In BibTeX, capitalize titles properly.  Use \\dots rather than ... .  This reviewer stops here.\n\n"
+	}
+	
+	if (!grammar_i && !grammar || !typos_i && !typos)
+	{
+		s += "The paper has numerous presentation issues.  "
+		if (!typos_i && !typos) {
+			s += "The paper contains numerous typos - Page 2, for instance, has a period '.' instead of a comma ','.  This is a sign of careless proofreading, and ultimately disrespect - if the authors do not care about their paper, why should the reader care?  At least _try_ to produce a polished version for submission.\n\n"
+		}
+		if (!grammar_i && !grammar) {
+			s += "The grammar"
+			if (!typos_i && !typos) {
+				s += " also"
+			}
+			s += " needs to be throughly checked and proof read. This reviewer is happy to point to this excellent resource that will help you out:\n\n    https://www.talkenglish.com/grammar/grammar.aspx\n\n"
+		}
+	}
+	
+	if (!layout_i && !layout || !grammar_i && !grammar || !typos_i && !typos)
+	{
+		s += "Keep in mind that a high number of presentation issues eventually will hinder the readers and reviewers to understand what your work is about.  Should you find misunderstandings in the above review, ask yourself what you could have done to avoid these.\n\n"
+	}
+	
+	if (!grammar_i || !typos_i || !layout_i) {
+		if (s == initial_s) {
+			s += "This reviewer read until Page 2, and the presentation seemed to be okay.\n\n"
+		}
+	}
+	
+	return s
+}
+
+function review_bibliography()
+{
+	var biblio = document.getElementById("biblio").checked
+	var biblio_i = document.getElementById("biblio").indeterminate
+
+	var area = document.getElementById("area").value
+	
+	if (!area) {
+		area = "the Field"
+	}
+
+	var s = ""
+	if (!biblio_i && !biblio) {
+		s += "BIBLIOGRAPHY.  Your bibliography misses the following references:\n\n" + 
+"[1] R. E. Viewer. 30 Years of Research in " + area + ".  A memoir." +
+"\n    Viewer & Sons, London, 2018.\n" +
+"[2] R. E. Viewer. Introduction to High-Impact Research." +
+"\n    Viewer & Sons, London, 2005.\n" +
+"[3] R. E. Viewer. More Citations through Reviews." +
+"\n    Viewer & Sons, London, 1991.\n" +
+"[4] D. E. Coy.  How not to be Identified as a Reviewer." +
+"\n    Viewer & Sons, London, 1993.\n" +
+"\nBe sure to read and cite these seminal works; this will help in getting your paper accepted.  Good luck!\n\n"
+	}
+	
+	return s
+}
+</script>
+
+<p>
+<input type="reset" value="Reset Form" onclick="init()">
+
+</form>
+</div>
+
+<div>
+
+<h2>The Review</h2>
+
+<button onclick="copy_review()">Copy to clipboard</button><br>
+
+<textarea id="review" rows="66" cols="80" style="font-family: monospace" readonly>
+</textarea>
+
+</div>
+</div>
+
+<script>
+function review_title()
+{
+	var title = document.getElementById("title").value
+	var s = "Review of '" + title + "'"
+	var anon = document.getElementById("anon").checked
+	var anon_i = document.getElementById("anon").indeterminate
+
+	var author = document.getElementById("author").value
+	var institution = document.getElementById("institution").value
+	
+	if (!anon_i && !anon)
+	{
+		if (author && institution)
+		{
+			s += " by " + author + ", " + institution
+		}
+		else if (author)
+		{
+			s += " by " + author
+		}
+		else if (institution)
+		{
+			s += institution
+		}
+	}
+	s += "\n\n"
+
+	return s
+}
+
+function review_abstract()
+{
+	var title = document.getElementById("title").value
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	var author = document.getElementById("author").value
+	var anon = document.getElementById("anon").checked
+	var novel = document.getElementById("novel").checked
+	var incremental = document.getElementById("incremental").checked
+	var subjects = document.getElementById("subjects").value
+	var working = document.getElementById("working").value
+	var layout = document.getElementById("incremental").checked
+	var grammar = document.getElementById("grammar").checked
+	var typos = document.getElementById("typos").checked
+	
+	if (!field) {
+		field = "research"
+	}
+	if (!area) {
+		area = "the field"
+	}
+
+	var s = "ABSTRACT.  "
+	s += "This paper, entitled '" + title + "', one more time addresses the problem of " + field + " in " + area + ".  The approach "
+	var the_approach = "the approach"
+	if (novel) {
+		s += "is novel, and "
+		the_approach = "it"
+	}
+	s += "is well-described in the paper.  "
+	if (incremental) {
+		s += "Yet, " + the_approach + " is only incremental with respect to the state of the art.  "
+		if (anon && author)
+		{
+			s += "This especially holds when compared against the latest works of " + author + ".  "
+		}
+	}
+
+	if (subjects == 0)
+	{
+		s += "The approach is shown to work only in theory; but "
+	}
+	if (subjects == 1)
+	{
+		s += "The approach is evaluated on one subject; and "
+	}
+	if (subjects > 1)
+	{
+		s += "The approach is evaluated on " + subjects + " subjects; and "
+	}
+	s += "despite its obvious limitations, it is shown to have potential under specific circumstances.  "
+	
+	if (parseInt(working) >= parseInt(subjects))
+	{
+		s += "In particular, its result consistently improve over the competition in the small set of experiments conducted.  "
+	}
+	else
+	{
+		s += "At least, this holds for a subset of " + working + "subjects.  "
+	}
+	if (layout && grammar && typos)
+	{
+		s += "Finally, the paper is well-written.  "
+	}
+	s += "\n\n"
+
+	return s
+}
+
+function review_summary()
+{
+	var title = document.getElementById("title").value
+	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
+	var author = document.getElementById("author").value
+	var anon = document.getElementById("anon").checked
+	var novel = document.getElementById("novel").checked
+	var incremental = document.getElementById("incremental").checked
+	var subjects = document.getElementById("subjects").value
+	var working = document.getElementById("working").value
+	var layout = document.getElementById("layout").checked
+	var grammar = document.getElementById("grammar").checked
+	var typos = document.getElementById("typos").checked
+	
+	if (!field) {
+		field = "research"
+	}
+	if (!area) {
+		area = "the field"
+	}
+
+	var s = "SUMMARY.  Points in favor:\n"
+	s += "(+) An interesting approach to " + field + " in " + area + "\n"
+	s += "(+) Paper does a good attempt at describing the approach\n"
+	
+	if (layout && grammar && typos)
+	{
+		s += "(+) Well-written\n"
+	}
+	s += "\nPoints against:\n"
+	if (novel) {
+		s += "(-) Far away from scientific mainstream\n"
+	}
+	else
+	{
+		s += "(-) Not novel\n"
+	}
+	if (incremental) {
+		s += "(-) Incremental\n"
+	}
+	else
+	{
+		s += "(-) Requires too many changes in current products and processes\n"
+	}
+	s += "(-) Insufficient evaluation\n"
+	
+	if (parseInt(working) < parseInt(subjects))
+	{
+		s += "(-) Results do not show advance beyond state of the art\n"
+	}
+
+	if (!layout || !grammar || !typos)
+	{
+		s += "(-) Substantial presentation issues\n"
+	}
+	s += "\n"
+	s += "RECOMMENDATION: Reject."
+
+	return s
+}
+</script>
+
+<script>
+function review()
+{
+	var title = document.getElementById("title").value
+	
+	if (title.length < 3)
+	{
+		return "Welcome to autoreject.org, the number one time saver for scientific reviews!\n\nWith autoreject.org, you can produce detailed reviews simply by answering a handful of questions on the paper.\n\n<<< To get started, simply fill out the form.\n"
+	}
+
+	r = review_title()
+	
+	if (has_approach && has_evaluation) {
+		r += review_abstract()
+	}
+
+	r += "REVIEW.  Generally speaking, this is interesting work which may well find some readers in the community.  However, in its present form, the paper suffers from a number of issues, which are outlined below.\n\n"
+
+	r += review_field()
+	r += review_author()
+	
+	if (has_approach) {
+		r += review_approach()
+	}
+	if (has_evaluation) {
+		r += review_evaluation()
+	}
+	if (has_limitations) {
+		r += review_limitations()
+	}
+	if (has_reproducibility) {
+		r += review_reproducibility()
+	}
+	if (has_presentation) {
+		r += review_presentation()
+		r += review_bibliography()
+	}
+
+	if (has_approach && has_evaluation && has_limitations && has_reproducibility && has_presentation)
+	{
+		r += review_summary()
+	}
+	else
+	{
+		r += "\n\n<<< Complete the form to complete review"
+	}
+
+	return r
+}
+function update_review()
+{
+	var review_text = review()
+	document.getElementById("review").value = review_text
+}
+
+function copy_review()
+{
+	el = document.getElementById("review")
+	el.select()
+	document.execCommand('copy')
+	el.setSelectionRange(0, 0)
+}
+
+function set_indeterminate() {
+	var checkboxes = ["anon", "rebuttal", "novel", "incremental", "sound", "complete", "formal", "scales", "inuse", "students", "threats", "future_work", "open_source", "open_data", "grammar", "typos", "layout", "biblio"]
+	
+	for (checkbox of checkboxes) {
+		el = document.getElementById(checkbox)
+		el.indeterminate = true
+		el.checked = false
+	}
+}
+
+function init()
+{
+	has_approach = 0
+	has_evaluation = 0
+	has_limitations = 0
+	has_reproducibility = 0
+	has_presentation = 0
+
+	set_indeterminate()
+	update_review()
+}
+</script>
+
+
+</body>
+</html>
