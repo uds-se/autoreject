@@ -4,6 +4,15 @@ layout: default
 ---
 
 <html>
+<head>
+<style>
+<!-- make labels of indeterminate checkbox grey -->
+input:indeterminate + label {
+    color: grey;
+}
+</style>
+</head>
+
 <body onload="init()">
 <h1>Autoreject.org&nbsp;&mdash; An&nbsp;automatic&nbsp;review&nbsp;generator</h1>
 
@@ -297,9 +306,9 @@ function review_approach() {
 <h3>Evaluation</h3>
 
 
-<input id="subjects" oninput="update_evaluation()" type="number" placeholder="10" min="0" max="999"> <label for="subjects">Number of subjects the approach was evaluated on.</label><br>
-<input id="working" oninput="update_evaluation()" type="number" placeholder="5" min="0" max="999"> <label for="working">Number of subjects it shows improvements on.</label><br>
-<input id="comparisons" oninput="update_evaluation()" type="number" placeholder="3" min="0" max="999"> <label for="comparisons">Number of approaches it was compared against.</label><br>
+<input id="subjects" oninput="update_evaluation()" type="number" placeholder="10" min="0" max="999" pattern="\d*"> <label for="subjects">Number of subjects the approach was evaluated on.</label><br>
+<input id="working" oninput="update_evaluation()" type="number" placeholder="5" min="0" max="999" pattern="\d*"> <label for="working">Number of subjects it shows improvements on.</label><br>
+<input id="comparisons" oninput="update_evaluation()" type="number" placeholder="3" min="0" max="999" pattern="\d*"> <label for="comparisons">Number of approaches it was compared against.</label><br>
 <input id="students" onchange="update_evaluation()" type="checkbox"> <label for="students">The evaluation involves students.</label><br>
 
 <script>
