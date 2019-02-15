@@ -46,6 +46,11 @@ h1, h2, h3, a {
     line-height: 16px;
 }
 
+#copied {
+	font-size: 12px;
+    color: darkblue;
+}
+
 #container {
     border-style: solid;
     border-width: 2px;

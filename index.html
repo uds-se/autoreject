@@ -789,7 +789,8 @@ function review_bibliography(accept)
 Please enable JavaScript in your browser.
 </textarea>
 
-<p><button onclick="copy_review()">Copy to Clipboard</button><br>
+<p><button onclick="copy_review()">Copy to Clipboard</button>
+<span id="copied"></span><br>
 
 </div>
 </div>
@@ -1073,10 +1074,21 @@ function copy_review()
         el.contentEditable = false
         el.readOnly = true
 
-	ret = document.execCommand('copy')
+	success = document.execCommand('copy')
 
 	el.setSelectionRange(0, 0)
 	update_review()
+	
+	copied = document.getElementById("copied")
+	
+	if (success)
+	{
+		copied.innerHTML = "Copied!"
+	}
+	else
+	{
+		copied.innerHTML = "Copy failed"
+	}
 }
 
 function set_indeterminate() {
