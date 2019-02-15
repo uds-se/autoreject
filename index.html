@@ -80,11 +80,16 @@ function review_title(accept)
 	{
 		if (accept)
 		{
+			if (!area) {
+				area = "Science"
+			}
 			s += "We are happy to inform you that your paper was accepted.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Your paper was one of them.\n\n"
 			
-			s += "Your paper was not only selected for acceptance, but also unanimously voted as best paper of the venue, with a score of 10.0 out of a maximum possible 10.0.  As such, your paper will see expedited publishing in our highest-impact journals.  We would also be honored if you could attend the award ceremony during the convention, where you will receive a golden plaque commemorating your achievements, a 100,000 GBP honorarium sponsored by the Royal Society, and a lifetime Amazon Prime subscription.  The award will be given in name and presence of the Duke and Duchess of Sussex.  They  have followed your work for a long time, and very much look forward to meet you.\n\n"
+			s += "Your paper was not only selected for acceptance, but also unanimously voted as best paper of the venue, with a score of 10.0 out of a maximum possible 10.0.  As such, your paper will see expedited publishing in the International Journal of " + area + ", the highest-impact journal in the field.\n\n"
+			
+			s += "We would also be honored if you could attend the award ceremony during the convention, where you will receive a golden plaque commemorating your achievements, a 100,000 GBP honorarium sponsored by the Royal Society, and a lifetime Amazon Prime subscription.  The award will be given in name and presence of the Duke and Duchess of Sussex.  They have followed your work for a long time, and very much look forward to meet you.\n\n"
 
-			s += "Your paper is perfect as is.  Still, we have enclosed detailed reviews of your paper below.  We hope that these will help you in your future work and look forward to the final version of your paper!\n\n"
+			s += "Finally, your paper is perfect as is.  Still, we have enclosed detailed reviews of your paper below.  We hope that these will help you in your future work and look forward to the final version of your paper!\n\n"
 		}
 		else
 		{
@@ -400,7 +405,7 @@ function review_evaluation(accept) {
 	
 	if (accept)
 	{
-		s += "The evaluation shows the full benefits of the approach.  The authors do a great effort in explaining the results; their novel usage of statistics clearly demonstrates how the few outliers can be easily attributed to noise and measurement effects.  Overall, this solid and significant work.\n\n"
+		s += "The evaluation shows the full benefits of the approach.  The authors do a great effort in explaining the results; their novel usage of statistics clearly demonstrates how the few outliers can be easily attributed to noise and measurement effects.  Overall, this is solid and significant work.\n\n"
 		return s
 	}
 	
