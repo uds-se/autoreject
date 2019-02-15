@@ -1,32 +1,31 @@
----
-title: Home
-layout: default
----
-
+<!DOCTYPE html>
 <html>
 <head>
-<style>
-<!-- make labels of indeterminate checkbox grey -->
-input:indeterminate + label {
-    color: grey;
-}
-</style>
+<meta charset="utf-8"/>
+<title>Autoreject - An Automatic Review Generator</title>
+
+<link href='https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700|Patua+One|Source+Code+Pro|Open+Sans|Staatliches' rel='stylesheet' type='text/css'>
+
+<link rel="stylesheet" href="custom.css">
+
 </head>
 
 <body onload="init()">
 <h1>Autoreject.org&nbsp;&mdash; An&nbsp;automatic&nbsp;review&nbsp;generator</h1>
 
+<p>
 <em>"Detailed reviews at the touch of a button ... Every reviewer should bookmark this immediately."</em> &mdash;&nbsp;Science&nbsp;and&nbsp;Review 24:2, April&nbsp;2019
+</p>
 
-<div class="flex-container" style="display: flex">
+<div id="container" class="flex-container">
 <div>
 
-<form id="paper" action="#" method="generate_review">
+<form id="paper" action="#" method="generate_review" onreset="init()">
 <h2>The Paper</h2>
 
-<h3>General Info</h3>
-<label for="title">Paper title:</label> <input id="title" type="text" placeholder="The Potrzebie System of Weights and Measures" size=52 oninput="update_review()"><br>
-<label for="area">Main Area:</label> <input id="area" type="text" placeholder="Computer Science" size=20 oninput="update_review()"><br>
+<!-- ><h3>General Info</h3> -->
+<label for="title">Paper title:</label> <input id="title" type="text" placeholder="The Potrzebie System of Weights and Measures" size=52 oninput="update_review()" autofocus><br>
+<label for="area">Main Area:</label> <input id="area" type="text" placeholder="Computer Science" size=20 oninput="update_review()">
 <label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
 
 <script>
@@ -123,7 +122,7 @@ function review_field()
 
 <h3>Author</h3>
 
-<label for="author">Main Author:</label> <input id="author" type="text" placeholder="Donald E. Knuth" size=20 oninput="update_review()"><br>
+<label for="author">Main Author:</label> <input id="author" type="text" placeholder="Donald E. Knuth" size=20 oninput="update_review()">
 <label for="institution">Institution:</label> <input id="institution" type="text" placeholder="Stanford" size=20 oninput="update_review()"> <br>
 
 <input id="anon" type="checkbox" onchange="update_review()"> <label for="anon">The submission is anonymous; Author and institution are guesses</label><br>
@@ -675,7 +674,7 @@ function review_bibliography()
 </script>
 
 <p>
-<input type="reset" value="Reset Form" onclick="init()">
+<input type="reset" value="Reset Form">
 
 </form>
 </div>
@@ -684,10 +683,10 @@ function review_bibliography()
 
 <h2>The Review</h2>
 
-<textarea id="review" rows="93" cols="72" style="font-family: monospace" readonly>
+<textarea id="review" rows="50" cols="72"readonly>
 </textarea>
 
-<p><button onclick="copy_review()">Copy to clipboard</button><br>
+<p><button onclick="copy_review()">Copy to Clipboard</button><br>
 
 </div>
 </div>
@@ -922,6 +921,7 @@ function init()
 }
 </script>
 
+<p class="imprint">Brought to you by <a href="https://twitter.com/AndreasZeller">@AndreasZeller</a>.  See the <a href="https://github.com/uds-se/autoreject">project page</a> for source code, comments, etc.</p>
 
 </body>
 </html>

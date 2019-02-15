@@ -1,0 +1,58 @@
+/* Fonts */
+h1, h2, h3, h4, h5 {
+	font-family: 'Staatliches', 'Patua One', Helvetica, Arial, sans-serif;
+}
+
+body {
+  font-family: 'Fira Sans', sans-serif;
+}
+
+code, kbd, pre, samp, textarea {
+  font-family: 'Fira Mono', 'Source Code Pro', monospace;
+}
+
+/* Sizes */
+label {
+	font-size: 14px;
+}
+
+textarea {
+	font-size: 14px;
+}
+
+@media only screen and (max-width: 800px) {
+    textarea {
+    	font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    textarea {
+    	font-size: 10px;
+    }
+}
+
+
+body {
+    background-color: #F0F0F0;
+}
+
+h1, h2, h3, a {
+    color: darkblue;
+}
+
+.imprint {
+	font-size: 12px;
+    line-height: 16px;
+}
+
+#container {
+    border-style: solid;
+    border-width: 2px;
+    border-color: darkblue;
+    padding-left: 20px;
+    padding-right: 20px;
+    
+    display: flex;
+    flex-wrap: wrap;
+}
