@@ -1049,6 +1049,7 @@ function update_review()
 {
 	var review_text = review(privileged())
 	document.getElementById("review").value = review_text
+	copied.innerHTML = ""
 }
 
 function copy_review()
@@ -1083,7 +1084,7 @@ function copy_review()
 	
 	if (success)
 	{
-		copied.innerHTML = "Copied!"
+		copied.innerHTML = "Copied " + review_text.length + " characters"
 	}
 	else
 	{
