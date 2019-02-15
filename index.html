@@ -77,9 +77,20 @@ function review_title(accept)
 
 	if (all_decisions())
 	{
-		s += "We are sorry to inform you that your paper was rejected.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Unfortunately, your paper was not one of them.\n\n"
+		if (accept)
+		{
+			s += "We are happy to inform you that your paper was accepted.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Your paper was one of them.\n\n"
+			
+			s += "Your paper was not only selected for acceptance, but also unanimously voted as best paper of the venue, with a score of 10.0 out of a maximum possible 10.0.  As such, your paper will see expedited publishing in our highest-impact journals.  Finally, we would be honored if you could attend the award ceremony during the convention where you will receive a golden plaque, a 10,000 GBP honorarium, and a lifetime Tidal subscription.  The award will be given in name and presence of the Duke and Duchess of Sussex, who are aware of your work very much look forward to meet you.\n\n"
 
-		s += "We have enclosed detailed reviews of your paper below.  We hope that these will help you in your scientific work and look forward to your future submissions!\n\n"
+			s += "Your paper is perfect as is.  Still, we have enclosed detailed reviews of your paper below.  We hope that these will help you in your future work and look forward to the final version of your paper!\n\n"
+		}
+		else
+		{
+			s += "We are sorry to inform you that your paper was rejected.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Unfortunately, your paper was not one of them.\n\n"
+
+			s += "We have enclosed detailed reviews of your paper below.  We hope that these will help you in your scientific work and look forward to your future submissions!\n\n"
+		}
 	}
 	else
 	{
@@ -597,6 +608,9 @@ function review_reproducibility(accept)
 
 	if (!open_source_i && open_source)
 	{
+		if (!area) {
+			area = "the field"
+		}
 		s += "We rarely see open source packages in " + area + "; so the extra effort by the authors in making their code available is well-appreciated.  However, faced with dozens of files with unknown extensions (.R, .ipynb) which would not even open in Word, this reviewer quickly gave up making sense of it all.  The assumption was that README.md would contain instructions, but again, this reviewer was not able to open it.  In the future, be sure your code can be accessed using standard Office tools and formats.\n\n"
 	}
 	if (!open_data_i && open_data)
@@ -1005,7 +1019,7 @@ function review(accept)
 		return "Welcome to autoreject.org, the number one time saver for scientific reviews!\n\nWith autoreject.org, you can produce detailed reviews simply by answering a handful of questions on the paper.\n\n<<< To get started, simply fill out the form.\n"
 	}
 
-	var r = review_title()
+	var r = review_title(accept)
 	
 	r += review_head(accept)
 
