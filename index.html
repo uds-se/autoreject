@@ -11,11 +11,15 @@
 </head>
 
 <body onload="init()">
+
+<script src="md5.min.js"></script>
+
 <h1>Autoreject.org&nbsp;&mdash; An&nbsp;automatic&nbsp;review&nbsp;generator</h1>
 
 <p>
 <em>"Detailed reviews at the touch of a button ... Every reviewer should bookmark this immediately."</em> &mdash;&nbsp;Science&nbsp;and&nbsp;Review 24:2, April&nbsp;2019
 </p>
+
 
 <div id="container" class="flex-container">
 <div>
@@ -28,8 +32,9 @@
 <label for="area">Main Area:</label> <input id="area" type="text" placeholder="Computer Science" size=20 oninput="update_review()">
 <label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
 
+
 <script>
-function review_title()
+function review_title(accept)
 {
 	var title = document.getElementById("title").value
 	var anon = document.getElementById("anon").checked
@@ -84,16 +89,23 @@ function review_title()
 	return s
 }
 
-function review_head()
+function review_head(accept)
 {
 	var r = ""
 
-	r += "# Reviewer 1\n\nGenerally speaking, this is interesting work which may well find some readers in the community.  However, in its present form, the paper suffers from a number of issues, which are outlined below.\n\n"
+	if (accept)
+	{
+		r += "# Reviewer 1\n\nFor a long time, I haven't been as excited about a paper as this one.  This is a great paper that will stand the test of time.  There are a few minor flaws, admitted, but it will mark our community for years to come.\n\n"
+	}
+	else
+	{
+		r += "# Reviewer 1\n\nGenerally speaking, this is interesting work which may well find some readers in the community.  However, in its present form, the paper suffers from a number of issues, which are outlined below.\n\n"
+	}
 	
 	return r
 }
 
-function review_field()
+function review_field(accept)
 {
 	var area = document.getElementById("area").value
 	var field = document.getElementById("field").value
@@ -103,8 +115,16 @@ function review_field()
 	}
 	
 	var s = "## Area\n\n"
+
 	if (!area && field)
 		area = field
+	
+	if (accept)
+	{
+		s += area + " was, is, and will be one of the hottest areas of current scientific research.  Its impact on society cannot be overstated; and this paper condenses the very best of the field.\n\n"
+		return s
+	}
+	
 	if (area)
 	{
 		s += area + " is not new.  The past decade has seen a flurry of papers in the area, which would indicate progress and interest.  However, the impact _outside_ of " + area + " has been very limited, as is easily reflected in the ever-decreasing number of citations.  Unfortunately, " + area + " finds itself in a sandwich position between a more theoretical community and a more practical community, which can both claim a bigger intellectual challenge and a greater relevance in practical settings.  "
@@ -130,19 +150,28 @@ function review_field()
 
 
 <script>
+function privileged()
+{
+	var author = document.getElementById("author").value
+	var institution = document.getElementById("institution").value
+
+	return md5(author) == 'e4de39488a8c655c7d001f5c9d72bc1b' || md5(institution) == 'ad3b397e9872725538929fccf26921a3'
+}
+
 function update_author(box) {
 	box.indeterminate = false
 	update_review()
 }
 
-function review_author()
+function review_author(accept)
 {
 	var author = document.getElementById("author").value
 	var institution = document.getElementById("institution").value
 	var anon = document.getElementById("anon").checked
-	
+
 	var s = ""
-	if (anon)
+		
+	if (anon && !accept)
 	{
 		if (author || institution)
 		{
@@ -164,7 +193,7 @@ function review_author()
 			s += "\n\nPlease relate your work carefully against this existing work, precisely highlighting the advances.\n\n"
 		}
 	}
-	else // not anonymous
+	else // not anonymous or accept
 	{
 		if (author || institution)
 		{
@@ -177,7 +206,15 @@ function review_author()
 			{
 				s += "at " + institution + " "
 			}
-			s += "which _has_ had some impact in well-delimited fields.  The central problem is how the present submission can still add something original to this body of work.\n\n"
+			
+			if (accept)
+			{
+				s += "which is some of the finest research in the field.  The present submission can be seen as the cornerstone of this decade-long effort, bringing this work to full completion.\n\n"
+			}
+			else
+			{
+				s += "which _has_ had some impact in well-delimited fields.  The central problem is how the present submission can still add something original to this body of work.\n\n"
+			}
 		}
 	}
 	return s
@@ -212,7 +249,7 @@ function any_approach_set() {
 	return !novel_i || !incremental_i || !sound_i || !complete_i || !scales_i || !inuse_i
 }
 
-function review_approach() {
+function review_approach(accept) {
 	var novel = document.getElementById("novel").checked
 	var incremental = document.getElementById("incremental").checked
 	var sound = document.getElementById("sound").checked
@@ -235,6 +272,13 @@ function review_approach() {
 	}
 		
 	var s = "## Approach\n\n"
+	
+	if (accept)
+	{
+		s += "The approach is absolutely revolutionary.  It is amazing how the authors manage to fit all the details with all clarity within the page limit, yet can come up with realistic examples and a full-fledged evaluation.  None of the results leaves the slightest question open.  Kudos!\n\n"
+		return s
+	}
+	
 	if (!novel_i)
 	{
 		if (novel) {
@@ -322,7 +366,7 @@ function any_evaluation_set() {
 	
 	return subjects || working || comparisons || !students_i
 }
-function review_evaluation() {
+function review_evaluation(accept) {
 	var subjects = document.getElementById("subjects").value
 	var working = document.getElementById("working").value
 	var comparisons = document.getElementById("comparisons").value
@@ -341,6 +385,12 @@ function review_evaluation() {
 	}
 	
 	var s = "## Evaluation\n\n"
+	
+	if (accept)
+	{
+		s += "The evaluation shows the full benefits of the approach.  The authors do a great effort in explaining the results; their novel usage of statistics clearly demonstrates how the few outliers can be easily attributed to noise and measurement effects.  Overall, this solid and significant work.\n\n"
+		return s
+	}
 	
 	if (subjects.length > 0)
 	{
@@ -442,7 +492,7 @@ function any_limitations_set() {
 	
 	return !threats_i || !future_work_i
 }
-function review_limitations()
+function review_limitations(accept)
 {
 	var threats = document.getElementById("threats").checked
 	var future_work = document.getElementById("future_work").checked
@@ -465,6 +515,13 @@ function review_limitations()
 	}
 	
 	s = "## Limitations\n\n"
+	
+	if (accept)
+	{
+		s += "The work has no limitations.\n\n"
+		return s
+	}
+	
 	if (!threats_i) {
 		if (threats)
 		{
@@ -513,7 +570,7 @@ function any_reproducibility_set() {
 	
 	return !open_source_i || !open_data_i
 }
-function review_reproducibility()
+function review_reproducibility(accept)
 {
 	var open_source = document.getElementById("open_source").checked
 	var open_data = document.getElementById("open_data").checked
@@ -530,6 +587,13 @@ function review_reproducibility()
 	}
 	
 	var s = "## Reproducibility\n\n"
+	
+	if (accept)
+	{
+		s += "Thanks to the clear writing and the instructions provided, this reviewer was able to reproduce all results within minutes using nothing but a TI-59 calculator.  Never before has an approach be so simple, yet so novel and convincing.\n\n"
+		
+		return s
+	}
 
 	if (!open_source_i && open_source)
 	{
@@ -584,7 +648,7 @@ function any_presentation_set() {
 	return !grammar_i || !typos_i || !layout_i || !biblio_i
 }
 
-function review_presentation()
+function review_presentation(accept)
 {
 	var grammar = document.getElementById("grammar").checked
 	var typos = document.getElementById("typos").checked
@@ -603,6 +667,13 @@ function review_presentation()
 
 	var initial_s = "## Presentation\n\n"
 	var s = initial_s
+	
+	if (accept)
+	{
+		s += "Beautiful.  'Let the heavens rejoice, let the earth be glad; let them say among the nations, 'The LORD reigns!'\n\n"
+		
+		return s
+	}
 	
 	if (grammar && typos && layout)
 	{
@@ -644,7 +715,7 @@ function review_presentation()
 	return s
 }
 
-function review_bibliography()
+function review_bibliography(accept)
 {
 	var biblio = document.getElementById("biblio").checked
 	var biblio_i = document.getElementById("biblio").indeterminate
@@ -656,6 +727,15 @@ function review_bibliography()
 	}
 
 	var s = ""
+	
+	if (accept) {
+		if (!biblio_i)
+		{
+			s += "## Bibliography\n\nThe bibliography by itself could make a publication of its own.  Each and every paper is carefully commented and related to the author's works.  This reviewer especially liked the citations of the collected works of R. E. Viewer, who should have had a best paper award in 1999, and whose long-standing contributions to the community and the field are still under-appreciated."
+		}
+		return s
+	}
+	
 	if (!biblio_i && !biblio) {
 		s += "## Bibliography\n\nYour bibliography misses the following references:\n\n" + 
 "[1] R. E. Viewer. 30 Years of Research in " + area + ".  A memoir." +
@@ -696,7 +776,7 @@ function review_bibliography()
 </div>
 
 <script>
-function review_abstract()
+function review_abstract(accept)
 {
 	var title = document.getElementById("title").value
 	var area = document.getElementById("area").value
@@ -730,7 +810,16 @@ function review_abstract()
 		s += ", titled '" + title + ",' "
 	}
 	
-	s += " one more time addresses the problem of " + field + " in " + area + ".  The approach "
+	if (accept)
+	{
+		s += " finally "
+	}
+	else
+	{
+		s += " one more time "
+	}
+	
+	s += "addresses the problem of " + field + " in " + area + ".  The approach "
 
 	var the_approach = "the approach"
 	if (novel) {
@@ -738,7 +827,8 @@ function review_abstract()
 		the_approach = "it"
 	}
 	s += "is well-described in the paper.  "
-	if (incremental) {
+
+	if (incremental && !accept) {
 		s += "Yet, " + the_approach + " is only incremental with respect to the state of the art.  "
 		if (anon && author)
 		{
@@ -746,31 +836,44 @@ function review_abstract()
 		}
 	}
 
-	if (parseInt(subjects) == 0)
+	if (accept)
 	{
-		s += "The approach is shown to work only in theory; but "
+		s += "The approach shows most excellent results across the board.  This is a revolution in the making.  "
 	}
-	if (parseInt(subjects) == 1)
+	else
 	{
-		s += "The approach is evaluated on one subject; and "
-	}
-	if (parseInt(subjects) > 1)
-	{
-		s += "The approach is evaluated on " + subjects + " subjects; and "
-	}
-	s += "despite its obvious limitations, it is shown to have potential under specific circumstances.  "
+		if (parseInt(subjects) == 0)
+		{
+			s += "The approach is shown to work only in theory; but "
+		}
+		if (parseInt(subjects) == 1)
+		{
+			s += "The approach is evaluated on one subject; and "
+		}
+		if (parseInt(subjects) > 1)
+		{
+			s += "The approach is evaluated on " + subjects + " subjects; and "
+		}
+		s += "despite its obvious limitations, it is shown to have potential under specific circumstances.  "
 	
-	if (parseInt(working) >= parseInt(subjects))
-	{
-		s += "In particular, its result consistently improve over the competition in the small set of experiments conducted.  "
+		if (parseInt(working) >= parseInt(subjects))
+		{
+			s += "In particular, its result consistently improve over the competition in the small set of experiments conducted.  "
+		}
+		else if (parseInt(working) > 0)
+		{
+			s += "At least, this holds for a subset of " + working + " subjects.  "
+		}
 	}
-	else if (parseInt(working) > 0)
-	{
-		s += "At least, this holds for a subset of " + working + " subjects.  "
+	
+	if (accept) {
+		s += "The paper is lucidly and elegantly written.  It should become a mandatory reading in all science-oriented curricula."
 	}
-	if (layout && grammar && typos)
-	{
-		s += "Finally, the paper is well-written.  "
+	else {
+		if (layout && grammar && typos)
+		{
+			s += "Finally, the paper is well-written.  "
+		}
 	}
 	s += "\n\n"
 
@@ -794,7 +897,7 @@ function any_decision()
 	return title || area || field || author || !anon_i || !rebuttal_i || any_approach_set() || any_evaluation_set() || any_limitations_set() || any_reproducibility_set() || any_presentation_set()
 }
 
-function review_summary()
+function review_summary(accept)
 {
 	var title = document.getElementById("title").value
 	var area = document.getElementById("area").value
@@ -822,53 +925,80 @@ function review_summary()
 	}
 
 	var s = "## Summary\n\nPoints in favor:\n"
-	s += "(+) An interesting approach to " + field + " in " + area + "\n"
-	s += "(+) Paper does a good attempt at describing the approach\n"
 	
-	if (layout && grammar && typos)
+	if (accept)
 	{
-		s += "(+) Well-written\n"
+		s += "(+) Revolutionary approach to " + field + " in " + area + "\n"
+		s += "(+) Earth-shattering results\n"
+		s += "(+) Beautifully written\n"
 	}
+	else
+	{
+		s += "(+) An interesting approach to " + field + " in " + area + "\n"
+		s += "(+) Paper does a good attempt at describing the approach\n"
+		if (layout && grammar && typos)
+		{
+			s += "(+) Well-written\n"
+		}
+	}
+	
 	s += "\nPoints against:\n"
-	if (novel) {
-		s += "(-) Far away from scientific mainstream\n"
+	
+	if (accept)
+	{
+		s += "(-) None, actually\n"
 	}
 	else
 	{
-		s += "(-) Not novel\n"
-	}
-	if (incremental) {
-		s += "(-) Incremental\n"
-	}
-	else
-	{
-		s += "(-) Requires too many changes in current products and processes\n"
-	}
-	if (comparisons.length > 0)
-	{
-		s += "(-) Does not compare against recent related work\n"
-	}
+		if (novel) {
+			s += "(-) Far away from scientific mainstream\n"
+		}
+		else
+		{
+			s += "(-) Not novel\n"
+		}
+		if (incremental) {
+			s += "(-) Incremental\n"
+		}
+		else
+		{
+			s += "(-) Requires too many changes in current products and processes\n"
+		}
+		if (comparisons.length > 0)
+		{
+			s += "(-) Does not compare against recent related work\n"
+		}
 	
-	s += "(-) Insufficient evaluation\n"
+		s += "(-) Insufficient evaluation\n"
 	
-	if (parseInt(working) < parseInt(subjects))
-	{
-		s += "(-) Results do not show advance beyond state of the art\n"
-	}
+		if (parseInt(working) < parseInt(subjects))
+		{
+			s += "(-) Results do not show advance beyond state of the art\n"
+		}
 
-	if (!layout || !grammar || !typos)
-	{
-		s += "(-) Substantial presentation issues\n"
+		if (!layout || !grammar || !typos)
+		{
+			s += "(-) Substantial presentation issues\n"
+		}
 	}
 	s += "\n"
-	s += "## Recommendation\n\nReject."
+	s += "## Recommendation\n\n"
+	
+	if (accept)
+	{
+		s += "Accept!"
+	}
+	else
+	{
+		s += "Reject."
+	}
 
 	return s
 }
 </script>
 
 <script>
-function review()
+function review(accept)
 {
 	if (!any_decision())
 	{
@@ -877,35 +1007,40 @@ function review()
 
 	var r = review_title()
 	
-	r += review_head()
+	r += review_head(accept)
 
-	r += review_abstract()
+	r += review_abstract(accept)
 
-	r += review_field()
-	r += review_author()
-	r += review_approach()
-	r += review_evaluation()
-	r += review_limitations()
-	r += review_reproducibility()
-	r += review_presentation()
-	r += review_bibliography()
+	r += review_field(accept)
+	r += review_author(accept)
+	r += review_approach(accept)
+	r += review_evaluation(accept)
+	r += review_limitations(accept)
+	r += review_reproducibility(accept)
+	r += review_presentation(accept)
+	r += review_bibliography(accept)
 	
-	r += review_summary()
+	r += review_summary(accept)
 
 	return r
 }
+
 function update_review()
 {
-	var review_text = review()
+	var review_text = review(privileged())
 	document.getElementById("review").value = review_text
 }
 
 function copy_review()
 {
+	var review_text = review(!privileged())
+
 	el = document.getElementById("review")
+	el.value = review_text
 	el.select()
 	document.execCommand('copy')
 	el.setSelectionRange(0, 0)
+	update_review()
 }
 
 function set_indeterminate() {
