@@ -12,7 +12,7 @@
 
 <body onload="init()">
 
-<script src="md5.min.js"></script>
+<script src="md5.min.js" type="text/javascript"></script>
 
 <h1>Autoreject.org&nbsp;&mdash; An&nbsp;automatic&nbsp;review&nbsp;generator</h1>
 
@@ -20,6 +20,7 @@
 <em>"Detailed reviews at the touch of a button ... Every reviewer should bookmark this immediately."</em> &mdash;&nbsp;Science&nbsp;and&nbsp;Review 24:2, April&nbsp;2019
 </p>
 
+<noscript>Please note: This site needs JavaScript to work.</noscript>
 
 <div id="container" class="flex-container">
 <div>
@@ -33,7 +34,7 @@
 <label for="field">Subarea:</label> <input id="field" type="text" placeholder="Software Engineering" size=20 oninput="update_review()" required><br>
 
 
-<script>
+<script type="text/javascript">
 function review_title(accept)
 {
 	var title = document.getElementById("title").value
@@ -160,7 +161,7 @@ function review_field(accept)
 <input id="rebuttal" onchange="update_author(this)" type="checkbox"> <label for="rebuttal">The authors have provided a substantial rebuttal</label><br> <!-- no effect -->
 
 
-<script>
+<script type="text/javascript">
 function privileged()
 {
 	var author = document.getElementById("author").value
@@ -243,7 +244,7 @@ function review_author(accept)
 <input id="scales" onchange="update_approach(this)" type="checkbox"> <label for="scales">The approach scales.</label><br>
 <input id="inuse" onchange="update_approach(this)" type="checkbox"> <label for="inuse">The approach is in use outside of academia.</label>
 
-<script>
+<script type="text/javascript">
 function update_approach(box) {
 	box.indeterminate = false
 	update_review()
@@ -365,7 +366,7 @@ function review_approach(accept) {
 <input id="comparisons" oninput="update_evaluation()" type="number" placeholder="3" min="0" max="999" pattern="\d*"> <label for="comparisons">Number of approaches it was compared against.</label><br>
 <input id="students" onchange="update_evaluation()" type="checkbox"> <label for="students">The evaluation involves students.</label><br>
 
-<script>
+<script type="text/javascript">
 function update_evaluation() {
 	update_review()
 }
@@ -493,7 +494,7 @@ function review_evaluation(accept) {
 <input id="threats" type="checkbox" onchange="update_limitations()"> <label for="threats">The paper discusses threats to validity.</label><br>
 <input id="future_work" type="checkbox" onchange="update_limitations()"> <label for="future_work">The paper details future work.</label>
 
-<script>
+<script type="text/javascript">
 function update_limitations() {
 	update_review()
 }
@@ -571,7 +572,7 @@ function review_limitations(accept)
 <input id="open_source" onchange="update_reproducibility()" type="checkbox"> <label for="open_source">The code is available as open source</label>.<br>
 <input id="open_data" onchange="update_reproducibility()" type="checkbox"> <label for="open_data">The raw data is available as open data.</label><br>
 
-<script>
+<script type="text/javascript">
 function update_reproducibility() {
 	update_review()
 }
@@ -649,7 +650,7 @@ function review_reproducibility(accept)
 <input id="layout" onchange="update_presentation()" type="checkbox"> <label for="layout">The paper has no typesetting or layout errors.</label><br>
 <input id="biblio" onchange="update_presentation()" type="checkbox"> <label for="biblio">The bibliography is complete.</label><br>
 
-<script>
+<script type="text/javascript">
 function update_presentation() {
 	update_review()
 }
@@ -789,7 +790,7 @@ function review_bibliography(accept)
 </div>
 </div>
 
-<script>
+<script type="text/javascript">
 function review_abstract(accept)
 {
 	var title = document.getElementById("title").value
@@ -1011,7 +1012,7 @@ function review_summary(accept)
 }
 </script>
 
-<script>
+<script type="text/javascript">
 function review(accept)
 {
 	if (!any_decision())
