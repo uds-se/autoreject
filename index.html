@@ -919,10 +919,11 @@ function any_title_set()
 function any_author_set()
 {
 	var author = document.getElementById("author").value
+	var institution = document.getElementById("institution").value
 	var anon_i = document.getElementById("anon").indeterminate
 	var rebuttal_i = document.getElementById("rebuttal").indeterminate
 	
-	return author || !anon_i || !rebuttal_i
+	return author || institution || !anon_i || !rebuttal_i
 }
 
 
