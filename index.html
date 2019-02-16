@@ -23,7 +23,7 @@
 <div id="container" class="flex-container">
 <div>
 
-<form id="paper" action="#" method="generate_review" onreset="init()">
+<form id="paper" action="#" method="generate_review" onreset="reset_form()">
 <h2>The Paper <span class="checkmark" id="paper_check"></span></h2>
 
 <h3>Title and Area <span class="checkmark" id="title_check"></h3>
@@ -1169,6 +1169,11 @@ function init()
 {
 	set_indeterminate()
 	update_review()
+}
+
+function reset_form()
+{
+	setTimeout(init, 1)
 }
 </script>
 
