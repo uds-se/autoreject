@@ -43,6 +43,7 @@ function review_title(accept)
 	var author = document.getElementById("author").value
 	var institution = document.getElementById("institution").value
 	var area = document.getElementById("area").value
+	var field = document.getElementById("field").value
 
 	var s = ""
 
@@ -83,13 +84,16 @@ function review_title(accept)
 			if (!area) {
 				area = "Science"
 			}
+			if (!field) {
+				field = area
+			}
 			s += "We are happy to inform you that your paper was accepted.  The venue received a great many submissions of high quality.  Each submission was thoroughly and extensively reviewed by our expert panels.  After week-long online and offline discussions, we selected a small subset of papers to be accepted.  Your paper was one of them.\n\n"
 			
 			s += "Your paper was not only selected for acceptance, but also unanimously voted as best paper of the venue, with a score of 10.0 out of a maximum possible 10.0.  As such, your paper will see expedited publishing in the International Journal of " + area + ", the highest-impact journal in the field.\n\n"
 			
-			s += "We would also be honored if you could attend the award ceremony during the convention, where you will receive a golden plaque commemorating your achievements, a 100,000 GBP honorarium sponsored by the Royal Society, and a lifetime Amazon Prime subscription.  The award will be given in name and presence of the Duke and Duchess of Sussex.  They have followed your work for a long time, and very much look forward to meet you.\n\n"
+			s += "We would also be honored if you could attend the Best Paper Award ceremony during the convention, where you will receive the 100,000 GBP " + field + " Achievement Award sponsored by the Ponzi Science Fund.  The Award will be given in name and presence of Their Royal Highnesses The Duke and Duchess of Sussex.  They have followed your work for a long time, and very much look forward to meet you.  The Award comes with a golden plaque commemorating your achievements and a lifetime Amazon Prime subscription.\n\n"
 
-			s += "Finally, your paper is perfect as is.  Still, we have enclosed detailed reviews of your paper below.  We hope that these will help you in your future work and look forward to the final version of your paper!\n\n"
+			s += "As it comes to your paper, it is perfect as is.  Still, we have enclosed detailed reviews of your paper below.  We hope that these will help you in your future work and look forward to the final version of your paper!\n\n"
 		}
 		else
 		{
@@ -184,7 +188,14 @@ function review_author(accept)
 {
 	var author = document.getElementById("author").value
 	var institution = document.getElementById("institution").value
+	var title = document.getElementById("title").value
 	var anon = document.getElementById("anon").checked
+	var area = document.getElementById("area").value
+	
+	if (!area)
+	{
+		area = "the field"
+	}
 
 	var s = ""
 		
@@ -193,6 +204,10 @@ function review_author(accept)
 		if (author || institution)
 		{
 			s += "## Originality\n\nThe central problem of the paper is its novelty with respect to related work.  Just last month, this reviewer attended a talk "
+			if (title)
+			{
+				s += "on " + title + " "
+			}
 			if (author)
 			{
 				s += "by " + author + " "
@@ -226,7 +241,7 @@ function review_author(accept)
 			
 			if (accept)
 			{
-				s += "which is some of the finest research in the field.  The present submission can be seen as the cornerstone of this decade-long effort, bringing this work to full completion.\n\n"
+				s += "which is some of the finest research in " + area + ".  The present submission can be seen as the cornerstone of this decade-long effort, bringing this work to full completion.\n\n"
 			}
 			else
 			{
