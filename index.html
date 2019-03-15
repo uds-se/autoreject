@@ -34,6 +34,7 @@
 
 
 <script type="text/javascript">
+"use strict"
 function review_title(accept)
 {
 	var title = document.getElementById("title").value
@@ -265,6 +266,7 @@ function review_author(accept)
 <input id="inuse" onchange="update_approach(this)" type="checkbox"> <label for="inuse">The approach is in use outside of academia.</label>
 
 <script type="text/javascript">
+"use strict"
 function update_approach(box) {
 	box.indeterminate = false
 	update_review()
@@ -387,6 +389,7 @@ function review_approach(accept) {
 <input id="students" onchange="update_evaluation()" type="checkbox"> <label for="students">The evaluation involves students.</label><br>
 
 <script type="text/javascript">
+"use strict"
 function update_evaluation() {
 	update_review()
 }
@@ -515,6 +518,7 @@ function review_evaluation(accept) {
 <input id="future_work" type="checkbox" onchange="update_limitations()"> <label for="future_work">The paper details future work.</label>
 
 <script type="text/javascript">
+"use strict"
 function update_limitations() {
 	update_review()
 }
@@ -546,7 +550,7 @@ function review_limitations(accept)
 		field = "this field"
 	}
 	
-	s = "## Limitations\n\n"
+	var s = "## Limitations\n\n"
 	
 	if (accept)
 	{
@@ -593,6 +597,7 @@ function review_limitations(accept)
 <input id="open_data" onchange="update_reproducibility()" type="checkbox"> <label for="open_data">The raw data is available as open data.</label><br>
 
 <script type="text/javascript">
+"use strict"
 function update_reproducibility() {
 	update_review()
 }
@@ -671,6 +676,7 @@ function review_reproducibility(accept)
 <input id="biblio" onchange="update_presentation()" type="checkbox"> <label for="biblio">The bibliography is complete.</label><br>
 
 <script type="text/javascript">
+"use strict"
 function update_presentation() {
 	update_review()
 }
@@ -813,6 +819,7 @@ Please enable JavaScript in your browser.
 </div>
 
 <script type="text/javascript">
+"use strict"
 function review_abstract(accept)
 {
 	var title = document.getElementById("title").value
@@ -1048,6 +1055,7 @@ function review_summary(accept)
 </script>
 
 <script type="text/javascript">
+"use strict"
 function review(accept)
 {
 	if (!any_decision())
@@ -1090,7 +1098,7 @@ function copy_review()
 	// See https://stackoverflow.com/questions/34045777/copy-to-clipboard-using-javascript-in-ios
 	var review_text = review(!privileged())
 
-	el = document.getElementById("review")
+	var el = document.getElementById("review")
 	el.value = review_text
         el.contentEditable = true
         el.readOnly = false
@@ -1108,7 +1116,7 @@ function copy_review()
         el.contentEditable = false
         el.readOnly = true
 
-	success = document.execCommand('copy')
+	var success = document.execCommand('copy')
 
 	el.setSelectionRange(0, 0)
 	update_review()
@@ -1128,8 +1136,8 @@ function copy_review()
 function set_indeterminate() {
 	var checkboxes = ["anon", "rebuttal", "novel", "incremental", "sound", "complete", "formal", "scales", "inuse", "students", "threats", "future_work", "open_source", "open_data", "grammar", "typos", "layout", "biblio"]
 	
-	for (checkbox of checkboxes) {
-		el = document.getElementById(checkbox)
+	for (var checkbox of checkboxes) {
+		var el = document.getElementById(checkbox)
 		el.indeterminate = true
 		el.checked = false
 	}
@@ -1137,7 +1145,7 @@ function set_indeterminate() {
 
 function set_checkmark(id, status)
 {
-	el = document.getElementById(id)
+	var el = document.getElementById(id)
 
 	if (status)
 	{
