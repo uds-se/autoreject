@@ -891,7 +891,7 @@ function review_abstract(accept)
 	}
 	else
 	{
-		if (parseInt(subjects) == 0)
+		if (subjects.length == 0 || parseInt(subjects) == 0)
 		{
 			s += "The approach is shown to work only in theory; but "
 		}
