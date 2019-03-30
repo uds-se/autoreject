@@ -37,7 +37,7 @@
 "use strict"
 function todo(comment)
 {
-	return "<<< To complete the review, please " + comment + ".\n"
+	return "<<< To complete the review, please " + comment + ".\n\n"
 }
 
 function review_title(accept)
@@ -856,7 +856,7 @@ function review_abstract(accept)
 	s += "This paper"
 	if (title)
 	{
-		s += ", titled '" + title + ",' "
+		s += ", titled '" + title + ",'"
 	}
 	
 	if (accept)
