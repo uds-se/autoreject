@@ -26,11 +26,6 @@ With this site, we hope to raise some attention towards the problem of overly fo
 
 Of course!  As a reviewer, you can always make your life very easy by pointing at one of the "issues" listed on the site.  Ignore the potential of the work, ignore whether it may make some difference or not.  Avoid taking a difficult decision and simply go for the first flaw you can find.
 
-<!-- (will elaborate this further in a blog post)
-### Have you used such formalistic arguments, too?
-
-Rarely, but yes.  There's submissions where I as a reviewer feel that these are not meant to advance science, but only for the purpose of getting some paper published. Such work may be flawless, brilliantly written, yet entirely without significance.  Since others will have to cite these papers, to compare against them, replicate them, etc., such papers actually obstruct the scientific progress.  Yet arguing to reject a paper because of perceived lack of significance is lots of effort, hence I am happy if I find other arguments for rejection.
--->
 
 ### What are all the possible outcomes?
 
