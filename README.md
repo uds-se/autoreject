@@ -29,7 +29,7 @@ Of course!  As a reviewer, you can always make your life very easy by pointing a
 
 ### What are all the possible outcomes?
 
-Feel free to examine the source code; this is where you will systematically cover all possible texts.
+Feel free to examine the [source code](https://github.com/uds-se/autoreject/blob/master/index.html); this is where you will systematically cover all possible texts.
 
 
 ### Is there a way not to get your paper rejected?
