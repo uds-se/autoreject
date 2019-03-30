@@ -58,7 +58,14 @@ h1, h2, h3, a {
 }
 
 .checkmark {
-    color: #a0a0a0;
+    font-family: 'Fira Sans', sans-serif;
+	font-size: 8px;
+    font-weight: bold;
+    background-color: #a0a0a0;
+    color: #ffffff;
+    padding: 2px;
+    position: relative;
+    bottom: 4px;
 }
 
 #container {

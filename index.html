@@ -817,7 +817,7 @@ function review_bibliography(accept)
 Please enable JavaScript in your browser.
 </textarea>
 
-<p><button onclick="copy_review()">Copy to Clipboard</button>
+<p><button id="copy" onclick="copy_review()">Copy to Clipboard</button>
 <span id="copied"></span><br>
 
 </div>
@@ -1094,6 +1094,7 @@ function update_review()
 	document.getElementById("review").value = review_text
 
 	update_checkmarks()
+	update_copy()
 
 	copied.innerHTML = ""
 }
@@ -1155,11 +1156,21 @@ function set_checkmark(id, status)
 
 	if (status)
 	{
-		el.innerHTML = "&nbsp;&#10004;" // checkmark
+		// el.innerHTML = "&nbsp;&#10004;" // checkmark
+		el.innerHTML = ""
+		el.style.visibility='hidden'
 	}
 	else
 	{
-		el.innerHTML = ""
+		if (id == "review_check")
+		{
+			el.innerHTML = "INCOMPLETE"
+		}
+		else
+		{
+			el.innerHTML = "PLEASE COMPLETE"
+		}
+		el.style.visibility='visible'
 	}
 }
 
@@ -1177,6 +1188,11 @@ function update_checkmarks() {
 	set_checkmark("limitations_check", any_limitations_set())
 	set_checkmark("presentation_check", any_presentation_set())
 	set_checkmark("reproducibility_check", any_reproducibility_set())
+}
+
+function update_copy() {
+	var copy_button = document.getElementById("copy")
+	copy_button.disabled = !all_decisions()
 }
 
 function init()
