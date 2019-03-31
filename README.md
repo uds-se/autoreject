@@ -27,14 +27,19 @@ With this site, I hope to raise some attention towards the problem of overly for
 Of course!  As a reviewer, you can always make your life easy by pointing at one of the "issues" listed in the autoreject reviews.  Ignore the potential of the work, ignore whether it may make some difference or not.  Avoid taking a difficult decision and simply go for the first flaw you can find.
 
 
+### Are reviews really this bad?
+
+No.  While some reviews may indeed be problematic, by far most reviewers are driven by the honest desire to understand and value the submitted material.  If a reviewer rejects your paper for whatever arguments, you should always ask yourself what you could and should have done to improve.  A "shallow" review often is a sign that the reviewer was not motivated enough to get deeper, possibly because s/he had a bad day, but more likely because your paper could have done better.  Improve and try again.
+
+
 ### The form does not really fit to my branch of science.
 
-I am pretty active in the Software Engineering community, and hence the site is pretty much geared towards arguments, methods, and reviews in that community.  I'll be happy to include variants specialized for your community - e.g. autoreject.org/medicine, or autoreject.org/law.
+I am pretty active in the Software Engineering community, and hence the site is pretty much geared towards arguments, methods, and reviews in that community.  I'll be happy to include variants specialized for your community - e.g. autoreject.org/medicine, or autoreject.org/history.
 
 
 ### What are all the possible outcomes?
 
-Feel free to examine the [source code](https://github.com/uds-se/autoreject/blob/master/index.html); this is where you can find all snippets and their conditions.
+Feel free to experiment with the site.  If you want to cheat, examine the [source code](https://github.com/uds-se/autoreject/blob/master/index.html); this is where you can find all snippets and their conditions.
 
 
 ### Is there a way to get your paper accepted?
