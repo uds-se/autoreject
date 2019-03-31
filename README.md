@@ -14,7 +14,7 @@ autoreject.org is an April's fools joke.  No reviewer with a clear mind would ev
 
 ### Where do these text snippets come from?
 
-The "arguments" in the generator all are inspired by real reviews and arguments I have collected over time.  This includes reviews colleagues and I have gotten for papers of ours, co-reviews of papers I reviewed, and discussions in PC meetings.  I also follow [@ShitMyReviewers](https://twitter.com/YourPaperSucks) for inspiration.
+The "arguments" in the generator all are inspired by real reviews and arguments I have collected over time.  This includes reviews colleagues and I have gotten for papers of ours, co-reviews of papers I reviewed, and discussions in PC meetings.  I also follow [ShitMyReviewersSay](https://twitter.com/YourPaperSucks) for inspiration.
 
 
 ### Why a site like this?
