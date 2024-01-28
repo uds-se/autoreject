@@ -9,7 +9,7 @@ April 1, 2019 - Andreas Zeller
 
 ### Is this for real?
 
-autoreject.org is an April's Fools joke.  No reviewer with a clear mind would ever use such a tool, right?  Choose from options and enjoy!
+Autoreject is an April's Fools joke.  No reviewer with a clear mind would ever use such a tool, right?  Choose from options and enjoy!
 
 
 ### Where do these text snippets come from?
@@ -34,7 +34,7 @@ No.  While some reviews may be problematic, most reviewers are driven by the hon
 
 ### The form does not fit my branch of science.
 
-I am active in the Software Engineering community, so the site is geared towards arguments, methods, and reviews in that community.  I'll be happy to include variants specialized for your community - e.g. for medicine or history.
+I am active in the Software Engineering community, so the site is geared towards arguments, methods, and reviews in that community.  I'll happily include variants specialized for your community - e.g., for medicine or history.
 
 
 ### What are all the possible outcomes?
